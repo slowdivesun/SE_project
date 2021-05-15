@@ -16,6 +16,6 @@ This is part an open source project for the discord server of an organization.
 
 
 ### 2. Technology Used
-Selenium and Chrome webdriver
-discord.py
-Postgres database
+* Selenium and Chrome webdriver
+* discord.py
+* Postgres database
