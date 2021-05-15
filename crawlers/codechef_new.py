@@ -11,7 +11,7 @@ from datetime import datetime
 
 import os
 from dotenv import load_dotenv
-load_dotenv(".gitignore\.env")
+load_dotenv()
 
 PASS = os.getenv("PASSWORD")
 PORT = os.getenv("PORT")

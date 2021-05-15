@@ -11,7 +11,7 @@ from datetime import datetime as dtime
 
 import os
 from dotenv import load_dotenv
-load_dotenv(".gitignore\.env")
+load_dotenv()
 
 TOKEN = os.getenv("TOKEN")
 PASS = os.getenv("PASSWORD")

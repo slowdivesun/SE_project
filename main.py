@@ -4,7 +4,7 @@ from discord.ext import commands, tasks
 
 import os
 from dotenv import load_dotenv
-load_dotenv(".gitignore\.env")
+load_dotenv()
 TOKEN = os.getenv("TOKEN")
 PASS = os.getenv("PASSWORD")
 PORT = os.getenv("PORT")
