@@ -22,7 +22,7 @@ PATH = "C:\\Program Files (x86)\\chromedriver.exe"
 
 chrome_options = Options()
 chrome_options.headless = True
-chrome_options.binary_location = r"C:\\Program Files\\Google\Chrome\\Application\\chrome.exe"
+chrome_options.binary_location = r"C:\\Program Files (x86)\\Google\Chrome\\Application\\chrome.exe"
 
 driver = webdriver.Chrome(executable_path=PATH, options=chrome_options)
 
@@ -83,50 +83,51 @@ def insert_present_data(conn, present_contests):
 def extract_present_data():
 
     WebDriverWait(driver, 10).until(
-        EC.presence_of_all_elements_located((By.XPATH, "//*[@id='primary-content']/div/div[3]/table/tbody/tr"))
+        EC.presence_of_all_elements_located((By.XPATH, "//*[@id='present-contests-data']/tr"))
     )
 
-    rows = driver.find_elements_by_xpath("//*[@id='primary-content']/div/div[3]/table/tbody/tr")
+    rows = driver.find_elements_by_xpath("//*[@id='present-contests-data']/tr")
 
     rowsize = len(rows)
 
     codes = []
     for i in range(0, rowsize):
         WebDriverWait(driver, 10).until(
-         EC.presence_of_all_elements_located((By.XPATH, '//*[@id="primary-content"]/div/div[3]/table/tbody/tr["+i+"]/td[1]'))
+         EC.presence_of_all_elements_located((By.XPATH, '//*[@id="present-contests-data"]/tr["+i+"]/td[1]'))
         )
         codes.append(driver.find_elements_by_xpath(
-            '//*[@id="primary-content"]/div/div[3]/table/tbody/tr["+i+"]/td[1]')[i].text
+            '//*[@id="present-contests-data"]/tr["+i+"]/td[1]')[i].text
         )
 
     names = []
     for i in range(0, rowsize):
         WebDriverWait(driver, 10).until(
-         EC.presence_of_all_elements_located((By.XPATH, '//*[@id="primary-content"]/div/div[3]/table/tbody/tr["+i+"]/td[2]'))
+         EC.presence_of_all_elements_located((By.XPATH, '//*[@id="present-contests-data"]/tr["+i+"]/td[2]'))
         )
         names.append(driver.find_elements_by_xpath(
-            '//*[@id="primary-content"]/div/div[3]/table/tbody/tr["+i+"]/td[2]')[i].text
+            '//*[@id="present-contests-data"]/tr["+i+"]/td[2]')[i].text
         )
     links=[]
     for i in range(0, rowsize):
         element = driver.find_element_by_link_text(names[i])
-        ele=element.get_attribute('href')
+        ele = element.get_attribute('href')
         links.append(ele)
+
     startTime = []
     for i in range(0, rowsize):
         WebDriverWait(driver, 10).until(
-         EC.presence_of_all_elements_located((By.XPATH, '//*[@id="primary-content"]/div/div[3]/table/tbody/tr["+i+"]/td[3]'))
+         EC.presence_of_all_elements_located((By.XPATH, '//*[@id="present-contests-data"]/tr["+i+"]/td[3]'))
         )
         startTime.append(driver.find_elements_by_xpath(
-            '//*[@id="primary-content"]/div/div[3]/table/tbody/tr["+i+"]/td[3]')[i].text
+            '//*[@id="present-contests-data"]/tr["+i+"]/td[3]')[i].text
         )
 
     ends = []
     for i in range(0, rowsize):
         WebDriverWait(driver, 10).until(
-         EC.presence_of_all_elements_located((By.XPATH, '//*[@id="primary-content"]/div/div[3]/table/tbody/tr["+i+"]/td[4]'))
+         EC.presence_of_all_elements_located((By.XPATH, '//*[@id="present-contests-data"]/tr["+i+"]/td[4]'))
         )
-        ends.append(driver.find_elements_by_xpath('//*[@id="primary-content"]/div/div[3]/table/tbody/tr["+i+"]/td[4]')[i].text)
+        ends.append(driver.find_elements_by_xpath('//*[@id="present-contests-data"]/tr["+i+"]/td[4]')[i].text)
 
     endTime = []
     for i in ends:
@@ -145,51 +146,53 @@ def extract_present_data():
 def extract_future_data():
 
     WebDriverWait(driver, 10).until(
-        EC.presence_of_all_elements_located((By.XPATH, "//*[@id='primary-content']/div/div[6]/table/tbody/tr"))
+        EC.presence_of_all_elements_located((By.XPATH, '//*[@id="future-contests-data"]/tr'))
     )
     # //*[@id="primary-content"]/div/div[6]
-    rows = driver.find_elements_by_xpath("//*[@id='primary-content']/div/div[6]/table/tbody/tr")
+    rows = driver.find_elements_by_xpath('//*[@id="future-contests-data"]/tr')
 
     rowsize = len(rows)
 
     codes = []
     for i in range(0, rowsize):
         WebDriverWait(driver, 10).until(
-         EC.presence_of_all_elements_located((By.XPATH, '//*[@id="primary-content"]/div/div[6]/table/tbody/tr["+i+"]/td[1]'))
+         EC.presence_of_all_elements_located((By.XPATH, '//*[@id="future-contests-data"]/tr/td[1]'))
         )
         codes.append(driver.find_elements_by_xpath(
-            '//*[@id="primary-content"]/div/div[6]/table/tbody/tr["+i+"]/td[1]')[i].text
+            '//*[@id="future-contests-data"]/tr/td[1]')[i].text
         )
     
     names = []
     for i in range(0, rowsize):
         WebDriverWait(driver, 10).until(
-         EC.presence_of_all_elements_located((By.XPATH, '//*[@id="primary-content"]/div/div[6]/table/tbody/tr["+i+"]/td[2]'))
+         EC.presence_of_all_elements_located((By.XPATH, '//*[@id="future-contests-data"]/tr/td[2]'))
         )
         names.append(driver.find_elements_by_xpath(
-            '//*[@id="primary-content"]/div/div[6]/table/tbody/tr["+i+"]/td[2]')[i].text
+            '//*[@id="future-contests-data"]/tr/td[2]')[i].text
         )
+
     links=[]
     for i in range(0, rowsize):
         element = driver.find_element_by_link_text(names[i])
-        ele=element.get_attribute('href')
+        ele = element.get_attribute('href')
         links.append(ele)
+
     starts = []
     for i in range(0, rowsize):
         WebDriverWait(driver, 10).until(
-         EC.presence_of_all_elements_located((By.XPATH, '//*[@id="primary-content"]/div/div[6]/table/tbody/tr["+i+"]/td[3]'))
+         EC.presence_of_all_elements_located((By.XPATH, '//*[@id="future-contests-data"]/tr/td[3]'))
         )
         starts.append(driver.find_elements_by_xpath(
-            '//*[@id="primary-content"]/div/div[6]/table/tbody/tr["+i+"]/td[3]')[i].text
+            '//*[@id="future-contests-data"]/tr/td[3]')[i].text
         )
 
     ends = []
     for i in range(0, rowsize):
         WebDriverWait(driver, 10).until(
-         EC.presence_of_all_elements_located((By.XPATH, '//*[@id="primary-content"]/div/div[6]/table/tbody/tr["+i+"]/td[4]'))
+         EC.presence_of_all_elements_located((By.XPATH, '//*[@id="future-contests-data"]/tr/td[4]'))
         )
         ends.append(driver.find_elements_by_xpath(
-            '//*[@id="primary-content"]/div/div[6]/table/tbody/tr["+i+"]/td[4]')[i].text
+            '//*[@id="future-contests-data"]/tr/td[4]')[i].text
         )
 
     '''convert the endtime of a contest from "24 Oct 2020 12:30:00" format to "2020-10-24 12:30:00" format '''
@@ -260,12 +263,12 @@ def main():
         print(e)
 
     create_table_future = '''CREATE TABLE future_contests(
-                    CODE text UNIQUE, NAME text, link text NOT NULL,
+                    CODE text UNIQUE, NAME text, LINK text NOT NULL,
                     START text, ENDt text, endTime timestamp,
                     is_added INTEGER NOT NULL CHECK(is_added IN (0,1)));'''
 
     create_table_present = '''CREATE TABLE present_contests(
-                    CODE text UNIQUE, NAME text, link text NOT NULL,
+                    CODE text UNIQUE, NAME text, LINK text NOT NULL,
                     START text, ENDt text, endTime timestamp,
                     is_added INTEGER NOT NULL CHECK(is_added IN (0,1)));'''
 
