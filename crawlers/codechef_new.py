@@ -3,7 +3,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+from selenium.webdriver.chrome.options import Options
 import psycopg2
 from psycopg2 import Error
 
@@ -22,7 +22,7 @@ PATH = "C:\\Program Files (x86)\\chromedriver.exe"
 
 chrome_options = Options()
 chrome_options.headless = True
-chrome_options.binary_location = r"C:\\Program Files (x86)\\Google\Chrome\\Application\\chrome.exe"
+chrome_options.binary_location = r"C:\\Program Files\\Google\Chrome\\Application\\chrome.exe"
 
 driver = webdriver.Chrome(executable_path=PATH, options=chrome_options)
 
@@ -49,7 +49,7 @@ def insert_future_data(conn, future_contests):
     cursor.execute('DELETE FROM future_contests')
     for items in future_contests:
         try:
-            cursor.execute('INSERT INTO future_contests VALUES (%s,%s,%s,%s,%s,0)', items)
+            cursor.execute('INSERT INTO future_contests VALUES (%s,%s,%s,%s,%s,%s,0)', items)
         except Error as e:
             conn.rollback()
             print(e)
@@ -67,7 +67,7 @@ def insert_present_data(conn, present_contests):
     cursor.execute('DELETE FROM present_contests')
     for items in present_contests:
         try:
-            cursor.execute('INSERT INTO present_contests VALUES (%s,%s,%s,%s,%s,0)', items)
+            cursor.execute('INSERT INTO present_contests VALUES (%s,%s,%s,%s,%s,%s,0)', items)
         except Error as e:
             conn.rollback()
             print(e)
@@ -107,7 +107,11 @@ def extract_present_data():
         names.append(driver.find_elements_by_xpath(
             '//*[@id="primary-content"]/div/div[3]/table/tbody/tr["+i+"]/td[2]')[i].text
         )
-
+    links=[]
+    for i in range(0, rowsize):
+        element = driver.find_element_by_link_text(names[i])
+        ele=element.get_attribute('href')
+        links.append(ele)
     startTime = []
     for i in range(0, rowsize):
         WebDriverWait(driver, 10).until(
@@ -129,7 +133,7 @@ def extract_present_data():
         datetime_object = datetime.strptime(i, '%d %b %Y %H:%M:%S')
         endTime.append(datetime_object)
 
-    lists = [codes, names, startTime, ends, endTime]
+    lists = [codes, names,links,startTime, ends, endTime]
 
     present_contests = list(zip(*lists))
     # print(present_contests)
@@ -156,7 +160,7 @@ def extract_future_data():
         codes.append(driver.find_elements_by_xpath(
             '//*[@id="primary-content"]/div/div[6]/table/tbody/tr["+i+"]/td[1]')[i].text
         )
-
+    
     names = []
     for i in range(0, rowsize):
         WebDriverWait(driver, 10).until(
@@ -165,7 +169,11 @@ def extract_future_data():
         names.append(driver.find_elements_by_xpath(
             '//*[@id="primary-content"]/div/div[6]/table/tbody/tr["+i+"]/td[2]')[i].text
         )
-
+    links=[]
+    for i in range(0, rowsize):
+        element = driver.find_element_by_link_text(names[i])
+        ele=element.get_attribute('href')
+        links.append(ele)
     starts = []
     for i in range(0, rowsize):
         WebDriverWait(driver, 10).until(
@@ -193,7 +201,7 @@ def extract_future_data():
 
     driver.quit()
 
-    lists = [codes, names, starts, ends, endTime]
+    lists = [codes, names,links, starts, ends, endTime]
 
     future_contests = list(zip(*lists))
 
@@ -203,7 +211,7 @@ def extract_future_data():
 def get_present_data(conn):
 
     cursor = conn.cursor()
-    cursor.execute('SELECT code,name,start,endt FROM present_contests WHERE is_added = 0')
+    cursor.execute('SELECT code,name,link,start,endt FROM present_contests WHERE is_added = 0')
     list_p = cursor.fetchall()
     for item in list_p:
         list_present.append(item)
@@ -216,7 +224,7 @@ def get_present_data(conn):
 def get_future_data(conn):
 
     cursor = conn.cursor()
-    cursor.execute('SELECT code,name,start,endt FROM future_contests WHERE is_added = 0')
+    cursor.execute('SELECT code,name,link,start,endt FROM future_contests WHERE is_added = 0')
     list_f = cursor.fetchall()
     for item in list_f:
         list_future.append(item)
@@ -252,12 +260,12 @@ def main():
         print(e)
 
     create_table_future = '''CREATE TABLE future_contests(
-                    CODE text UNIQUE, NAME text,
+                    CODE text UNIQUE, NAME text, link text NOT NULL,
                     START text, ENDt text, endTime timestamp,
                     is_added INTEGER NOT NULL CHECK(is_added IN (0,1)));'''
 
     create_table_present = '''CREATE TABLE present_contests(
-                    CODE text UNIQUE, NAME text,
+                    CODE text UNIQUE, NAME text, link text NOT NULL,
                     START text, ENDt text, endTime timestamp,
                     is_added INTEGER NOT NULL CHECK(is_added IN (0,1)));'''
 
