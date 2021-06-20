@@ -67,7 +67,7 @@ async def on_reminder_chef(coming,channel):
 
     # function to convert datetimes to dd mmm yyyy hh:mm:ss' format
     def dtime_conv(date_time):
-        date_time = date_time[3][:11] + " "+ date_time[3][12:]
+        date_time = date_time[2][:11] + " "+ date_time[2][12:]
         date_time = dtime.strptime(date_time, '%d %b %Y %H:%M:%S')
         return date_time
 
@@ -95,26 +95,26 @@ async def on_reminder_chef(coming,channel):
     # if contest list is not empty
     else:
         for i in coming:
-            start = i[3][:11]
+            start = i[2][:11]
             if (dtime.strptime(start, "%d %b %Y").date() == datetime.date.today()):
                 start = 'Today      '
             elif (dtime.strptime(start, "%d %b %Y").date() == tom_date):
                 start = 'Tomorrow   '
-            s_time = i[3][12:]
+            s_time = i[2][12:]
             if (s_time[1] == ':'):
                 s_time = '0' + s_time
 
-            end = i[4][:11]
+            end = i[3][:11]
             if (dtime.strptime(end, "%d %b %Y").date() == datetime.date.today()):
                 end = 'Today'
             elif (dtime.strptime(end, "%d %b %Y").date() == tom_date):
                 end = 'Tomorrow   '
-            e_time = i[4][12:]
+            e_time = i[3][12:]
             if (e_time[1] == ':'):
                 e_time = '0' + e_time
 
             name = '__***'+i[1]+'***__'
-            time1='[Go to the contest page]({})'.format(i[2])+'\n'+'```'+'Start time'+'  |  '+'End time'+'\n'+start +' |  '+ end +'\n'+ s_time +'    |  '+ e_time +'```' 
+            time1='[Go to the contest page]({})'.format(i[6])+'\n'+'```'+'Start time'+'  |  '+'End time'+'\n'+start +' |  '+ end +'\n'+ s_time +'    |  '+ e_time +'```' 
             embed.add_field(name=name, value=time1, inline=False)
 
    
@@ -224,8 +224,8 @@ async def getlist():
 
     # checking if any future codechef events start within 24 hrs
     for event in sorted_events_future:
-        print(dtime.strptime(event[3], '%d %b %Y\n%H:%M:%S'))   # prints the codechef contest starttime CAN BE REMOVED
-        if dtime.strptime(event[3], '%d %b %Y\n%H:%M:%S') < bracket:
+        print(dtime.strptime(event[2], '%d %b %Y\n%H:%M:%S'))   # prints the codechef contest starttime CAN BE REMOVED
+        if dtime.strptime(event[2], '%d %b %Y\n%H:%M:%S') < bracket:
             upcoming_chef.append(event)
         else:
             pass
