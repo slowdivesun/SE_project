@@ -124,7 +124,7 @@ async def on_reminder_forces(coming_forces, channel):
 
     # get the channel ID from the string passed
     channel_code = client.get_channel(channel)
-    print(channel_code)
+
 
     # get today and tomorrows dates
     today_date = datetime.date.today()
@@ -203,6 +203,7 @@ async def getlist():
     server_list = client.guilds
     cursor_info = conn_info.cursor()     # cursor of server ID database
 
+
     # takes each contest in Present Contests table of codechef and each contest in the codeforces table
     # sort them according to start time and put them in lists
     c.execute("""SELECT * FROM Present_Contests ORDER BY START""")
@@ -211,14 +212,16 @@ async def getlist():
     sorted_events_future = c.fetchall()
     c_forces.execute("SELECT * FROM Present_Contests ORDER BY START")
     sorted_events_forces = c_forces.fetchall()
-    # print(sorted_events_forces)        # CAN BE REMOVED
+
 
     upcoming_chef = []      # stores all ongoing codechef contest
     upcoming_forces = []    # stores all codeforces contests that start in the next 24 hours from now
 
+
     # store all ongoing codechef contests in this list
     for event in sorted_events_present:
         upcoming_chef.append(event)
+
 
     # checking if any future codechef events start within 24 hrs
     for event in sorted_events_future:
@@ -227,6 +230,7 @@ async def getlist():
             upcoming_chef.append(event)
         else:
             pass
+
 
     # check which codeforces contest start in next 24 hours
     for event in sorted_events_forces:
