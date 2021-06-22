@@ -13,7 +13,7 @@ PATH = "C:\\Program Files (x86)\\chromedriver.exe"
 
 chrome_options = Options()
 chrome_options.headless = True
-chrome_options.binary_location = "C:\\Program Files (x86)\\Google\Chrome\\Application\\chrome.exe"
+chrome_options.binary_location = r"C:\\Program Files (x86)\\Google\Chrome\\Application\\chrome.exe"
 
 driver = webdriver.Chrome(PATH)
 

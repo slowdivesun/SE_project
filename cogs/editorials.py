@@ -32,19 +32,18 @@ class Editorials(commands.Cog):
         conn_edit = psycopg2.connect(f"dbname={DB_NAME_EDIT} host=localhost port=5432  user=postgres password={PASS}")
         cur_edit = conn_edit.cursor()
 
-        cur_edit.execute("SELECT * FROM editorial_info")
+        cur_edit.execute("SELECT * FROM editorial_info")    # getting list of editorials
         editorial_list = cur_edit.fetchall()
 
-        embed_list = []
+        embed_list = []      # list to store embeds with 5 field each. this is done to ensure the chat is not flooded by long embeds 
 
-        num_of_pages = len(editorial_list)//5 + 1
+        num_of_pages = len(editorial_list) if (len(editorial_list)%5==0) else len(editorial_list)//5 + 1      # number of embed pages
 
         for i in range(len(editorial_list)//5 + 1):
             embed = discord.Embed(
                 title=f'__**Editorials**__',
                 description='',
                 colour=discord.Colour.blurple(),
-                # footer=f"Page {i+1}/{num_of_pages}"
             )
             embed.set_author(name='Codechef', icon_url='https://static.dribbble.com/users/70628/screenshots/1743345/codechef.png')
             embed.set_footer(text=f"Page {i+1}/{num_of_pages}")
@@ -53,6 +52,8 @@ class Editorials(commands.Cog):
         current_embed_num = 0
         current_embed = embed_list[current_embed_num]
         
+
+        # loop to divide embed fields into groups of five
         for i in range(len(editorial_list)):
             if (i%5==0 and i!=0):
                 current_embed_num += 1
@@ -63,12 +64,10 @@ class Editorials(commands.Cog):
         msg = await ctx.send(embed=embed_list[0])
 
         def check(reaction, user):
-            return user == ctx.author # and (str(reaction.emoji) == '➡️' or str(reaction.emoji) == '⬅️')
+            return user == ctx.author and (str(reaction.emoji) == '➡️' or str(reaction.emoji) == '⬅️')
 
-        await msg.add_reaction('⬅️')
-        # await asyncio.sleep(1)
+        await msg.add_reaction('⬅️')    # emoji reactions to navigate between pages
         await msg.add_reaction('➡️')
-
 
         cur_edit.close()
         conn_edit.close()
@@ -91,14 +90,6 @@ class Editorials(commands.Cog):
                 if i < max:
                     i += 1 
                     await msg.edit(embed = embed_list[i])
-            print(i)
-            # elif str(reaction) == '➡️':
-            #     i = 2
-            #     await msg.edit(embed = embed_list[i])
-            
-            
-
-
 
     
 def setup(client):
